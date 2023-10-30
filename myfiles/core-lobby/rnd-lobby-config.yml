@@ -1,0 +1,123 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ rnd_host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+    - hosts: "{{ hosts }}"
+  tasks:
+    - name: copy the scripts
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ hosts }}/scripts/', dest: '{{ path2 }}/{{ serv }}'}
+      when: (serv== "lobby")
+
+    - name: copy the sslcerts
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/ssl/', dest: '{{ path2 }}/{{ serv }}/ssl'}
+      when: (serv == "lobby")
+
+
+    - name: copy the lobby XML files
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ hosts }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}/' }
+      - { src: '{{ job }}/{{ hosts }}/middleware_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}/'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path2 }}/{{ serv }}'}
+      when: ( serv == "lobby")
+
+    - name: delete lobby from /home/gameadmin
+      become: true
+      file:
+        path: /home/gameadmin/lobby
+        state: absent
+
+
+        #- name: copy the lobby COMMON PROPERTIES files
+        #become: true
+        #copy:
+        # src: "{{ item.src }}"
+        #dest: "{{ item.dest }}"
+        #owner: devops
+        #group: devops
+        #mode: 0644
+        #with_items:
+      #- { src: '{{ job }}/{{ serv }}/common{{ serv }}.properties', dest: '/home/gameadmin/{{ serv }}/' }
+      #- { src: '{{ job }}/{{ hosts }}/common{{ serv }}.properties', dest: '/home/gameadmin/{{ serv }}' }
+      #when: (serv == "lobby")
+
+    - name: copy the lobby SPECIFIC PROPERTIES files
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ hosts }}/{{ serv }}.properties', dest: '{{ path2 }}/{{ serv }}' }
+              #- { src: '{{ job }}/{{ serv }}/{{ serv }}.properties', dest: '{{ path2 }}/{{ serv }}/' }
+      when: (serv == "lobby")
+    - name: copy bastion instance deploy scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0777
+      with_items:
+      - { src: '/home/devops/ansible/ec2scripts/deploy-lobby.sh', dest: '/home/devops' }
+      - { src: '/home/devops/ansible/ec2scripts/private-playbook-lobby.yml', dest: '/home/devops' }
+
+
+    - name: "Execute main playbook for deploying in private instance"
+      #become: yes
+      shell: sh /home/devops/deploy-lobby.sh {{ host }} {{ service }} {{ path }} {{ path2 }} {{ hosts }}
+
+      #- name: merge lobby properties
+      #become: true
+      #assemble:
+      # src: "/home/gameadmin/{{ serv }}"
+      # dest: mergedfile
+      #when: ( serv == "lobby")
+
+      #- name: Find uniqe entries
+      #become: true
+      #shell: cat mergedfile  > "{{ path }}/{{ serv }}lib/{{ serv }}.properties"
+      # when: ( serv == "lobby")
+      #- name: Find uniqe entries
+      #shell: cat mergedfile  > "{{ path2 }}/{{ serv }}lib/{{ serv }}.properties"
+      #when: ( serv == "lobby")
+
+      # - name: stop the service
+      #shell: sh {{ path2 }}/gsa/{{ serv }}/stop{{ serv }}.sh
+      #when: ( serv == "lobby")
+
+      #    - name: start the service
+      #      command: sh {{ path }}/gsa/{{ serv }}/run.sh
+      #      when: ( serv == "lobby")
+
+      #- name: start the service
+      #shell: sh run.sh
+      #chdir: "{{ path }}/gsa/{{ serv }}"
+      #args:
+      # chdir: "{{ path2 }}/gsa/{{ serv }}"

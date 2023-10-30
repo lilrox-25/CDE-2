@@ -1,0 +1,100 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+  tasks:
+    - name: "Ansible Checking {{service}} folders"
+      stat:
+        path: "{{ path }}/{{ service }}"
+      register: my_folder
+
+      # when: my_folder.stat.exists == false
+
+    - name: Display paths of all {{ serv }} files in dir
+      debug: msg={{ lookup('fileglob', '{{ job }}/target/{{ serv }}*.jar') }}
+
+
+    - name: Copy war files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        #dest: "{{ path }}/tomcat/webapps/{{ serv }}/"
+        dest: "{{ path }}/tomcat/webapps/"
+        owner: "webadmin"
+        group: "webadmin"
+        mode: 0600
+      with_fileglob:
+              #        - '{{ job }}/target/*SNAPSHOT.jar'
+              #- '{{ job }}/target/*SNAPSHOT.war'
+        - '{{ job }}/target/*.war'
+      when: (serv== "AceAdmin") or (serv== "Ace2Three")
+
+      #- name: rename war
+      #become_user: jenkins
+      #local_action: shell scp -r {{ job }}/target/{{ serv }}-1.0-SNAPSHOT.war home/devops/webadminfiles/{{ serv }}.war
+      #shell: sshpass -p webadmin ssh -o StrictHostKeyChecking=no webadmin@10.0.21.128 sh /opt/ace2three/newgameserver/a23analytics/bin/startup.s
+      #when: (serv== "Ace2Three") or (serv== "AceAdmin")
+      
+
+      #- name: rename war
+      #ansible.builtin.copy:
+       # argv: "scp -r {{ serv }}-1.0-SNAPSHOT.war {{ serv }}.war"
+       # chdir: "{{ path }}/tomcat/webapps/"
+       #become_user: root
+       # remote_src: true
+       # src: "{{ path }}/tomcat/webapps/{{ serv }}-1.0-SNAPSHOT.war"
+       #dest: "{{ path }}/tomcat/webapps/{{ serv }}.war"
+       #owner: "webadmin"
+       #group: "webadmin"
+       #mode: 0600
+       #when: (serv== "Ace2Three") or (serv== "AceAdmin")
+
+      #- name: remove the existing code
+      #ansible.builtin.file:
+      # state: absent
+      # path: "{{ path }}/tomcat/webapps/{{ serv }}/*"
+      #when: (serv== "AceAdmin") or (serv== "Ace2Three")
+
+
+      #- name: Copy war files
+      #ansible.builtin.copy:
+      #  src: "{{ item }}"
+        #dest: "{{ path }}/tomcat/webapps/{{ serv }}/"
+        # dest: "{{ path }}/tomcat/webapps/AceAdmin/"
+        #owner: "webadmin"
+        #group: "webadmin"
+        #mode: 0600
+        #with_fileglob:
+              #        - '{{ job }}/target/*SNAPSHOT.jar'
+              #- '{{ job }}/target/*SNAPSHOT.war'
+              #- '{{ job }}/target/*.war'
+          #when: (serv== "AceAdmin") or (serv== "Ace2Three")
+
+      #- name: extract war
+      #shell: "jar -xvf /opt/tomcat/webapps/{{ serv }}.war"
+                    #cmd: "jar -xvf *SNAPSHOT.war"
+                    #chdir: "/opt/tomcat/webapps/{{ serv }}/"
+                    #when: (serv== "AceAdmin") or (serv== "Ace2Three")
+
+
+      #- name: remove the war after extraction
+      #ansible.builtin.file:
+      # path: "{{ path }}/tomcat/webapps/AceAdmin/AceAdmin-1.war"
+      # state: absent
+        #with_fileglob:
+              # - '{{ job }}/target/*SNAPSHOT.jar'
+              #- '{{ job }}/target/*SNAPSHOT.war'
+              #when: (serv== "AceAdmin") or (serv== "Ace2Three") 
+
+    - name: stop the {{ serv }} service
+      #shell: sh "{{ path }}/{{ serv }}/run.sh"
+      local_action: shell /home/devops/ansible/core-lobby/tomcatscripts/admin-stop-{{ serv }}.sh {{ pod }}
+      when: (serv== "AceAdmin") or (serv== "Ace2Three")
+      ignore_errors: true
+
+
+    - name: start the {{ serv }} service
+      #shell: sh "{{ path }}/{{ serv }}/run.sh"
+      local_action: shell /home/devops/ansible/core-lobby/tomcatscripts/admin-start-{{ serv }}.sh {{ pod }}
+      when: (serv== "AceAdmin") or (serv== "Ace2Three")

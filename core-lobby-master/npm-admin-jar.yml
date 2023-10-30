@@ -1,0 +1,37 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+  tasks:
+    - name: "Ansible Checking {{service}} folders"
+      stat:
+        path: "{{ path }}/{{ service }}"
+      register: my_folder
+
+    - name: "echo {{ service }} already existed"
+      debug:
+        msg: "the {{ service }} directory is already existed"
+      when: my_folder.stat.exists
+
+    - name: "Creating {{ service }} folders if not exists"
+      file:
+        path: "{{ path }}/{{ service }}"
+        state: directory
+        mode: 0755
+        group: webadmin
+        owner: webadmin
+      when: my_folder.stat.exists == false
+
+    - name: "Copying the contents of public/ folder"
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/{{ serv }}/"
+        owner: webadmin
+        group: webadmin
+        mode: 0777
+      with_fileglob:
+        - '{{ job }}/public'
+      when: (serv == "PFAdmin")
+

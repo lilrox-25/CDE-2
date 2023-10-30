@@ -1,0 +1,59 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  vars:
+    - serv: "{{ service }}"
+  tasks:
+    - name: "Ansible Checking {{service}} folders"
+      stat:
+        path: "{{ path }}/platform_services/{{ service }}"
+      register: my_folder
+
+    - name: "echo {{ service }} already existed"
+      debug:
+        msg: "the {{ service }} directory is already existed"
+      when: my_folder.stat.exists
+
+    - name: "Creating {{ service }} folders if not exists"
+      file:
+        path: "{{ path }}/platform_services/{{ service }}"
+        state: directory
+        mode: 0755
+        group: webadmin
+        owner: webadmin
+      when: my_folder.stat.exists == false
+
+    - name: Copy jar files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/platform_services/{{ serv }}"
+        owner: "webadmin"
+        group: "webadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*SNAPSHOT.jar'
+      when: (serv== "admin-customer-services") or (serv== "admin-acs-services")  or (serv== "admin-gateway-services") or (serv == "admin-rm-services")
+
+    - name: Copy the scripts to services
+      copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/platform_services/{{ serv }}"
+        owner: "webadmin"
+        group: "webadmin"
+        mode: 0777
+      with_fileglob:
+        - '{{ job }}/start-{{ serv }}.sh'
+        - '{{ job }}/stop-{{ serv }}.sh'
+        - '{{ job }}/run.sh'
+      when: (serv== "admin-customer-services") or (serv== "admin-acs-services") or (serv== "admin-gateway-services") or (serv == "admin-rm-services")
+
+    - name: stop the {{ serv }} service
+      local_action: shell /home/devops/ansible/tomcatscripts/admin-stop-{{ serv }}.sh {{ pod }}
+      when: (serv== "admin-customer-services") or (serv== "admin-acs-services") or (serv== "admin-gateway-services") or (serv == "admin-rm-services")
+      ignore_errors: true
+
+    - name: start the {{ serv }} service
+      local_action: shell /home/devops/ansible/tomcatscripts/admin-start-{{ serv }}.sh {{ pod }}
+      when: (serv== "admin-customer-services") or (serv== "admin-acs-services") or (serv== "admin-gateway-services") or (serv == "admin-rm-services")
+   
+

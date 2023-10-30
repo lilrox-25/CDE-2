@@ -1,0 +1,36 @@
+
+[dev2-fantasy-systemmanager]
+65.2.70.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/devops/ansible/secrets/fantasy.pem
+[qa-fantasy-systemmanager]
+13.233.163.73 ansible_user=ubuntu ansible_ssh_private_key_file=/home/devops/ansible/secrets/fantasyqa.pem
+[qa2-fantasy-systemmanager]
+3.143.247.247 ansible_user=ubuntu ansible_ssh_private_key_file=/home/devops/ansible/secrets/fantasyqa2.pem
+
+
+##[web-admin-pladmin-fe]
+[pladmin-fe-BizOps]
+10.0.21.104 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-LBF]
+10.0.21.153 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-Player-Account]
+10.0.21.150 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-Anti-Fraud]
+10.0.21.151 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-RnD]
+10.0.21.106 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-QA]
+10.0.21.102 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-QA2]
+10.0.21.117 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-dev]
+10.0.21.145 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-dev2]
+10.0.21.152 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-Casual_Games]
+10.0.21.146 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-SpareDev1]
+10.0.21.147 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-fe-SpareDev2]
+10.0.21.148 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+

@@ -1,0 +1,225 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #become: true
+  vars:
+    - serv: "{{ service }}"
+    - servnumber: "{{ servicenumber }}"
+  tasks:
+    - name: copy the config files
+      # become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:        
+      - { src: '{{ job }}/{{ serv }}/{{ serv }}.properties', dest: '{{ path }}/{{ serv }}lib/' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/' }
+      - { src: '{{ job }}/{{ serv }}/middleware_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/lib/'}  
+      when: (serv== "playpool") or (serv== "oldtourneymaster") or (serv== "tourneyrank") or (serv== "playstake") 
+
+    - name: copy the config files
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ servnumber }}/{{ serv }}.properties', dest: '{{ path }}/{{ serv }}lib/{{ serv }}.properties' }
+      - { src: '{{ job }}/{{ servnumber }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/' }
+      - { src: '{{ job }}/{{ servnumber }}/middleware_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/lib/'}
+      when: (serv == "realpool" and servnumber == "realpool1") or (serv == "realpool" and servnumber == "realpool2") or (serv == "realpool" and servnumber == "realpool3") or (serv== "oldtourneynode") or (serv == "tourneynode" and servnumber == "oldtourneynode1") or (serv == "tourneynode" and servnumber == "oldtourneynode2") or (serv == "tourneynode" and servnumber == "oldtourneynode3") or (serv == "tourneynode" and servnumber == "oldtourneynode4") or (serv == "tourneynode" and servnumber == "oldtourneynode5") or (serv == "tourneynode" and servnumber == "oldtourneynode6") or (serv == "realstake" and servnumber == "realstake1") or (serv == "realstake" and servnumber == "realstake2")
+
+    - name: copy the scripts
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/scripts/', dest: '{{ path }}/gsa/{{ serv }}'}
+      when: (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "tourneyrank") or (serv== "chat")  or (serv== "gamerulesengine") or (serv== "playstake") or (serv== "clevertap")
+
+
+
+    - name: copy the scripts
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ servnumber }}/scripts/', dest: '{{ path }}/gsa/{{ serv }}'}
+      when:  (serv == "realpool" and servnumber == "realpool1") or (serv == "realpool" and servnumber == "realpool2") or (serv == "realpool" and servnumber == "realpool3") or (serv== "oldtourneynode") or (serv == "tourneynode" and servnumber == "oldtourneynode1") or (serv == "tourneynode" and servnumber == "oldtourneynode2") or (serv == "tourneynode" and servnumber == "oldtourneynode3") or (serv == "tourneynode" and servnumber == "oldtourneynode4") or (serv == "tourneynode" and servnumber == "oldtourneynode5") or (serv == "tourneynode" and servnumber == "oldtourneynode6") or (serv == "realstake" and servnumber == "realstake1") or (serv == "realstake" and servnumber == "realstake2")
+
+
+    - name: copy the sslcerts
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/ssl/', dest: '{{ path }}/{{ serv }}lib/ssl/'}  
+        #when: (serv == "lobby") 
+      when: (serv == "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "playpool") or (serv== "playstake") or (serv== "oldtourneymaster") or (serv== "oldtourneynode")
+
+
+    - name: copy the chat config files
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:        
+      - { src: '{{ job }}/{{ serv }}/{{ serv }}.properties', dest: '{{ path }}/{{ serv }}lib/' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path }}/{{ serv}}lib/serverconfig/' }
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/lib/'}  
+      when: (serv== "chat") 
+    - name: copy the bridge config files
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ servnumber }}/{{ serv }}.properties', dest: '{{ path }}/{{ serv }}lib/{{ serv }}.properties' }
+      - { src: '{{ job }}/{{ servnumber }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/serverconfiguration_{{ serv }}.xml' }
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/lib/'}
+      when: (serv == "a23bridge" and servnumber == "a23bridge1") or (serv == "a23bridge" and servnumber == "a23bridge2")
+
+    - name: copy the FraudRules file for realpool & realstake
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:        
+      - { src: '{{ job }}/FraudRules.properties', dest: '{{ path }}/lib/'}  
+      when: (serv== "realpool") or (serv== "realstake") 
+    - name: copy the DB properties files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ path }}/{{ serv }}lib/"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+        - { src: '{{ job }}/{{ servnumber }}/DB_{{ serv }}.properties'}
+      when:  (serv == "realpool" and servnumber == "realpool1") or (serv == "realpool" and servnumber == "realpool2") or (serv == "realpool" and servnumber == "realpool3") or (serv == "realstake" and servnumber == "realstake1") or (serv == "realstake" and servnumber == "realstake2")
+
+
+    - name: copy the a23service config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:        
+      - { src: '{{ job }}/{{ serv }}/cassandra.properties', dest: '{{ path }}/Ace2ThreeService/jobs_config_service/' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_a23service.xml', dest: '{{ path }}/Ace2ThreeService/jobs_config_service/' }
+      - { src: '{{ job }}/{{ serv }}/a23service.properties', dest: '/opt/ace2three/newgameserver/Ace2ThreeService/jobs_config_service/' }
+        #      - { src: '{{ job }}/log4j.xml', dest: '/opt/ace2three/newgameserver/a23service/lib/'}  
+      when: ( serv == "Ace2ThreeService") 
+    - name: copy the a23service scripts
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"         
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/scripts/', dest: '{{ path }}/{{ serv }}/bin'}
+      when: (serv == "Ace2ThreeService")
+
+
+
+
+    - name: copy the a23analytics config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:        
+      #- { src: '{{ job }}/{{ serv }}/', dest: '/opt/ace2three/newgameserver/Ace23Analytics/jobs_config_analytics/' }
+      - { src: '{{ job }}/{{ servnumber }}/serverconfiguration_a23analytics.xml', dest: '/opt/ace2three/newgameserver/Ace23Analytics/jobs_config_analytics/' }
+      - { src: '{{ job }}/{{ servnumber }}/cassandra.properties', dest: '/opt/ace2three/newgameserver/Ace23Analytics/jobs_config_analytics/' }
+      - { src: '{{ job }}/{{ servnumber }}/{{ serv }}.properties', dest: '/opt/ace2three/newgameserver/Ace23Analytics/jobs_config_analytics/{{ serv }}.properties' }
+        #      - { src: '{{ job }}/log4j.xml', dest: '/opt/ace2three/newgameserver/a23analytics/lib/'}  
+      when: (serv == "Ace23Analytics" and servnumber == "a23analytics1") or (serv == "Ace23Analytics" and servnumber == "a23analytics2") or(serv == "Ace23Analytics" and servnumber == "a23analytics3")
+
+    - name: copy the a23analytics scripts
+      #become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/scripts/', dest: '{{ path }}/{{ serv }}/bin'}
+        #when: ( serv == "Ace23Analytics")
+      when: (serv == "Ace23Analytics" and servnumber == "a23analytics1") or (serv == "Ace23Analytics" and servnumber == "a23analytics2") or(serv == "Ace23Analytics" and servnumber == "a23analytics3")
+
+
+
+    - name: stop the {{ serv }} service
+      shell: sh {{ path }}/gsa/{{ serv }}/stop{{ serv }}.sh
+      when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "tourneyrank") or (serv== "chat") or (serv== "ace23service") or (serv== "a23bridge") or (serv== "gamerulesengine") or (serv== "playstake") or (serv== "clevertap")  or (serv== "ptrealpool") or (serv== "ptrealstake")
+      ignore_errors: true
+
+    - name: start the service
+      shell: sh run.sh
+          #chdir: "{{ path }}/gsa/{{ serv }}"
+      args:
+        chdir: "{{ path }}/gsa/{{ serv }}"
+      when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "tourneyrank") or (serv== "chat") or (serv== "a23bridge") or (serv== "gamerulesengine") or (serv== "playstake") or (serv== "clevertap") or (serv== "ptrealpool") or (serv== "ptrealstake")
+
+    - name: Service running logs
+      shell: ps -ef| grep {{serv}}
+      when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "tourneyrank") or (serv== "chat") or (serv== "gamerulesengine") or (serv== "playstake") or (serv== "clevertap") or (serv== "ptrealpool") or (serv== "ptrealstake")
+      register: output
+      failed_when: '"java -classpath" not in output.stdout'
+
+
+    - debug:
+        var: "output.stdout_lines"
+    - name: Service running logs
+      shell: ps -ef| grep {{serv}}
+      when: (serv== "a23bridge")
+      register: outputA
+      failed_when: '"java -Dspring.profiles.active" not in outputA.stdout'
+
+    - debug:
+        var: "outputA.stdout_lines"
+
+    - name: Service running logs
+      shell: ps -ef| grep {{serv}}
+      when: (serv== "Ace2ThreeService") or (serv== "Ace23Analytics")
+      register: outputT
+      failed_when: '"Djava" not in outputT.stdout'
+
+    - debug:
+        var: "outputT.stdout_lines"

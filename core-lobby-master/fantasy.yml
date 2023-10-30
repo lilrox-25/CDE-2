@@ -1,0 +1,25 @@
+---
+- name: "Playbook to copy apps"
+  hosts: dev2-fantasy-systemmanager
+  #  become: true
+  #vars:
+  # - serv: "{{ service }}"
+  tasks:
+          #- name: copy the config files
+      #copy:
+      # src: "{{ item.src }}"
+      # dest: "{{ item.dest }}"
+      # owner: ubuntu
+      # group: ubuntu
+      # mode: 0755
+      #with_items:        
+      #- { src: '{{ job }}/dev/jsScripts/*', dest: '/home/ubuntu/test' }
+    - name: copying files...
+      become: true 
+      copy:
+        src: /var/lib/jenkins/workspace/dev-fantasy-system_manager_scripts/dev/jsScripts/
+        dest: /home/ubuntu/test/
+        owner: ubuntu
+        group: ubuntu        
+        mode: 0755
+

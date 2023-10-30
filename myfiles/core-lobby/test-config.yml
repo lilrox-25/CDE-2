@@ -1,0 +1,152 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+    - date: "{{ lookup('pipe', 'date +%d-%m-%y-%T') }}"
+  tasks:
+
+    - name: copy the config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/{{ serv }}.properties', dest: '{{ path2 }}/{{ serv }}' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}' }
+      - { src: '{{ job }}/{{ serv }}/middleware_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path2 }}/{{ serv }}'}
+      when: (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "tourneyrank") or (serv== "playstake")
+
+
+    - name: copy the scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/scripts/', dest: '{{ path2 }}/{{ serv }}'}
+
+    - name: copy the sslcerts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/ssl/', dest: '{{ path2 }}/{{ serv }}/ssl'}
+      when: (serv == "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "playpool") or (serv== "playstake") or (serv == "chatserver")
+
+    - name: copy the chat & bridge config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/{{ serv }}.properties', dest: '{{ path2 }}/{{ serv }}' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}' }
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/{{ serv }}'}
+      when: (serv== "chatserver") or (serv== "a23bridge")
+
+    - name: copy the FraudRules file for realpool & realstake
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/FraudRules.properties', dest: '{{ path2 }}/{{ serv }}'}
+      when: (serv== "realpool") or (serv== "realstake")
+
+    - name: copy the DB properties files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ path2 }}/{{ serv }}/"
+        owner: devops
+        group: devops
+        mode: 0644
+      with_items:
+        - { src: '{{ job }}/{{ serv }}/DB_{{ serv }}.properties'}
+      when: (serv == "realpool") or (serv == "realstake")
+
+
+    - name: copy the a23service config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/', dest: '{{ path2 }}/{{ serv }}' }
+      when: ( serv == "Ace2ThreeService")
+
+
+    - name: copy the a23analytics config files
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/', dest: '{{ path2 }}/{{ serv }}' }
+      when: ( serv == "Ace23Analytics")
+
+
+    - name: copy the lobby config files
+      copy:
+       src: "{{ item.src }}"
+       dest: "{{ item.dest }}"
+       owner: devops
+       group: devops
+       mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/common{{ serv }}.properties', dest: '{{ path2 }}/{{ serv }}/' }
+      - { src: '{{ job }}/{{ serv }}/{{ hosts }}.properties', dest: '{{ path2 }}{{ serv }}/' }
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}/' }
+      - { src: '{{ job }}/{{ serv }}/middleware_{{ serv }}.xml', dest: '{{ path2 }}/{{ serv }}/'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path2 }}/{{ serv }}'}
+      when: (serv == "lobby") and (hosts == "lobby1") or ( serv == "lobby" ) and (hosts == "lobby2")
+
+
+    - name: merge lobby properties
+      assemble:
+        src: "/home/gameadmin/{{ serv }}"
+        dest: mergedfile
+      when: ( serv == "lobby")
+
+    - name: Find uniqe entries
+      shell: cat mergedfile  > "{{ path2 }}/{{ serv }}lib/{{ serv }}.properties"
+      #shell: cat mergedfile | sort -u | uniq -u > "{{ path }}/{{ serv }}lib/{{ serv }}.properties"
+      when: ( serv == "lobby")
+
+    - name: copy public instance deploy scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: devops
+        group: devops
+        mode: 0777
+      with_items:
+      - { src: '/home/devops/ansible/ec2scripts/deploy.sh', dest: '/home/devops' }
+      - { src: '/home/devops/ansible/ec2scripts/private-playbook.yml', dest: '/home/devops' }  
+
+
+    - name: "Execute main playbook for deploying in private instance"
+      become: yes
+      shell: sh /home/devops/deploy.sh {{ target_host }} {{ service }} {{ path }} {{ path2 }}
+      #command: "./deploy.sh {{ target_host }} {{ service }} {{ path }} {{ path2 }}"
+      #args:
+      #  chdir: "/home/devops/"
+
+

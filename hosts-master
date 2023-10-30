@@ -1,0 +1,426 @@
+[backup-server]
+10.0.22.120 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+#[all]
+
+[backup-master]
+#10.0.22.150 ansible_user=devops ansible_ssh_private_key_file=/home/devops/ansible/secrets/backup.pem
+# /var/lib/jenkins/
+10.0.22.150 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+
+
+#[dev2-core]
+[dev2-lobby1]
+10.0.21.126 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-realpool]
+10.0.21.126 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-realstake]
+10.0.21.126 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-ptrealpool]
+10.0.21.126 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-ptrealstake]
+10.0.21.126 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-lobby2]
+10.0.21.127 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-playpool]
+10.0.21.127 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-playstake]
+10.0.21.127 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-chatserver]
+10.0.21.127 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-a23service]
+10.0.21.128 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-a23analytics]
+10.0.21.128 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-a23bridge]
+10.0.21.128 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-fraud]
+10.0.21.128 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-longertourneymaster]
+10.0.21.129 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-longertourneynode]
+10.0.21.129 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-oldtourneymaster]
+10.0.21.131 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-oldtourneynode]
+10.0.21.131 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-tourneyrank]
+10.0.21.131 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-clevertap]
+10.0.21.132 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev2-gamerule]
+10.0.21.128 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+#[ace-dependency]
+#10.0.21.45 ansible_user=lakshmim ansible_ssh_pass=Head@123 ansible_sudo_pass=Head@123
+[ace-dependency] 
+ansible_ssh_host=10.0.21.45 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+#[dev-dynamodoa]
+[dev-dynamodoa] 
+ansible_ssh_host=10.0.21.45 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+*****************************************************************************************************************
+#[web-admin]
+##[web-admin-a23-web]
+[a23-web-BizOps]
+10.0.20.85 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+#[a23-web-LBF]
+#10.0.21.143 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-web-QA]
+10.0.20.89 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-web-QA2]
+10.0.20.84 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+#[web-admin-portal]
+[a23-portal-BizOps]
+10.0.21.120 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-newdev1]
+10.0.21.168 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-Player-Account]
+10.0.21.160 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-Anti-Fraud]
+10.0.21.161 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-RnD]
+10.0.21.162 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-QA]
+10.0.21.105 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-QA2]
+10.0.21.159 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-dev]
+10.0.21.123 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-portal-dev2]
+10.0.21.163 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+#[web-admin-pladmin-be]
+[pladmin-be-BizOps]
+10.0.21.154 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-newdev1]
+10.0.21.165 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-LBF]
+10.0.21.158 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-Player-Account]
+10.0.21.155 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-Anti-Fraud]
+10.0.21.156 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-RnD]
+10.0.21.157 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-QA]
+10.0.21.103 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-QA2]
+10.0.21.118 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-dev]
+10.0.21.138 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[pladmin-be-dev2]
+10.0.21.107 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+#[web-admin-a23-micro]
+[a23-micro-BizOps]
+10.0.20.85 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-micro-LBF]
+10.0.21.164 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-micro-QA]
+10.0.20.89 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[a23-micro-QA2]
+10.0.21.119 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+*****************************************************************************************************************
+
+[dev2-admin-bonus-engine]
+10.0.21.123 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+qa-bonus-engine
+10.0.21.105 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+
+
+
+#[dev2-fantasy]
+[dev2-fantasy-systemmanager]
+65.2.70.130 ansible_user=ubuntu ansible_ssh_private_key_file=/home/devops/ansible/core-lobby/secrtes/fantasy.pem
+
+
+#[dev1-core]
+[dev1-lobby]
+10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-a23bridge]
+10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-realpool]
+10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-realstake]
+10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-playpool]
+#10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+10.0.21.149 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-playstake]
+#10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+10.0.21.149 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-a23service]
+10.0.20.88 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-a23analytics]
+10.0.20.88 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-longertourneymaster]
+10.0.20.88 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-longertourneynode]
+10.0.20.88 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-oldtourneymaster]
+10.0.20.86 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-oldtourneynode]
+10.0.20.86 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-tourneyrank]
+10.0.20.86 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[dev1-chatserver]
+10.0.20.84 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+******************************************************************************************************
+
+
+#[qa-core]
+[qa-lobby]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+#[qa-lobby:vars]
+#ansible_python_interpreter=/usr/bin/python3
+[qa-realpool]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-realpool2]
+10.0.21.44 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-realstake]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-playpool]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-playstake]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-chatserver]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-BridgeService]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-tourneynode]
+10.0.21.89 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-tourneymaster]
+10.0.21.93 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-tourneyrank]
+10.0.21.93 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-A23analytics]
+10.0.21.90 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-A23service]
+10.0.21.90 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa-clevertap]
+10.0.21.92 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+
+
+****************************************************************************
+
+#[qa2-core]
+[qa2-lobby]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-realpool]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-realstake]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-playpool]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-playstake]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-chatserver]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-BridgeService]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-tourneynode]
+10.0.21.108 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-tourneymaster]
+10.0.21.111 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-tourneyrank]
+10.0.21.111 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-A23analytics]
+10.0.21.109 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-A23service]
+10.0.21.109 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[qa2-clevertap]
+10.0.21.110 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+
+
+***************************************************************************
+
+
+#[web-admin-qa]
+[qa-admin-pladmin-be]
+10.0.21.103 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[qa-admin-a23-portal]
+10.0.21.105 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[qa-admin-bonus-engine]
+10.0.21.105 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[qa-admin-a23-web]
+10.0.21.124 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[qa-admin-pladmin-fe]
+10.0.21.102 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+[qa-admin-a23-platform]
+10.0.20.89 ansible_user=webadmin ansible_ssh_pass=webadmin ansible_sudo_pass=webadmin
+************************************************************************************************
+##PROD-DR-SERVERS-CHENNAI##
+[dr-prod-playpool]
+180.179.59.49 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-playstake]
+180.179.59.49 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-realpool1]
+180.179.34.184 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-realpool2]
+180.179.34.181 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-realstake]
+180.179.47.219 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-oldtourneymaster]
+180.179.47.208 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneyrank]
+180.179.58.219 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode1]
+180.179.47.208 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode2]
+180.179.36.68 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode3]
+180.179.34.186 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode4]
+180.179.58.218 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode5]
+180.179.56.197 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-tourneynode6]
+180.179.36.66 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby1]
+180.179.34.183 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby2]
+180.179.56.199 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby3]
+180.179.34.186 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby4]
+180.179.56.197 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby5]
+180.179.58.218 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby6]
+180.179.34.181 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby7]
+180.179.58.220 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-lobby8]
+180.179.36.66 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-A23service]
+180.179.59.57 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-a23analytics1]
+180.179.59.57 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-a23analytics2]
+180.179.58.223 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-a23bridge1]
+180.179.59.52 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-a23bridge2]
+180.179.58.223 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[dr-prod-chat]
+180.179.59.49 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+#[dr-prod-a23analytics3]
+#[production-servers]
+#[prod-lobby1]
+#180.179.34.183 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+#[core-bastion]
+#18.61.98.235 ansible_ssh_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+
+
+
+
+[core-bastion]
+15.206.152.219 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+
+#[bastion]
+#10.0.22.30 ansible_ssh_user=devops ansible_ssh_pass=devops ansible_sudo_user=devops
+#[remote_host]
+#10.0.22.150 ansible_ssh_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+
+
+########################################[rnd-CORE]#####################################
+[rnd-lobby1]
+172.42.12.40 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby2]
+172.42.12.41 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby3]
+172.42.12.42 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby4]
+172.42.12.43 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby5]
+172.42.13.40 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby6]
+172.42.13.41 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby7]
+172.42.13.42 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-lobby8]
+172.42.13.43 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-oldtourneymaster]
+172.42.2.60 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourney1]
+172.42.2.61 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourney2]
+172.42.2.62 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourney3]
+172.42.3.60 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourney4]
+172.42.3.61 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourney5]
+172.42.3.62 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-tourneyrank]
+172.42.12.60 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-realpool1]
+172.42.2.30 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+#72.42.2.30 ansible_user=gameadmin ansible_ssh_private_key_file=/etc/ansible/rnd.pub
+[rnd-realpool2]
+172.42.2.31 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-realpool3]
+172.42.3.30 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-realpool4]
+172.42.3.31 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-playpool]
+172.42.2.50 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-playstake]
+172.42.3.51 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-realstake1]
+172.42.2.20 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-realstake2]
+172.42.3.20 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-gafs1]
+172.42.12.120 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-gafs2]
+172.42.13.120 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd-a23service]
+172.42.3.90 ansible_user=gameadmin ansible_ssh_pass=gameadmin ansible_sudo_pass=gameadmin
+[rnd:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh -p 2222 -W %h:%p -q devops@15.206.152.219"' 
+host_key_checking = False
+########################################[rnd-WEB-ADMIN]#####################################
+
+
+
+
+
+
+
+[slave-1]
+10.0.22.137 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[slave-2]
+10.0.22.123 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[slave-3]
+10.0.22.30 ansible_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[jh]
+18.61.23.135 ansible_ssh_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+[nodes]
+10.50.2.33 ansible_ssh_user=devops ansible_ssh_pass=devops ansible_sudo_pass=devops
+#10.0.22.150 ansible_user=devops ansible_ssh_private_key_file=/home/devops/ansible/secrets/backup.pem
+## [webservers]
+## alpha.example.org
+## beta.example.org
+## 192.168.1.100
+## 192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+## www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+## [dbservers]
+## 
+## db01.intranet.mydomain.net
+## db02.intranet.mydomain.net
+## 10.25.1.56
+## 10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+## db-[99:101]-node.example.com
+

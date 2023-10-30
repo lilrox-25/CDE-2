@@ -1,0 +1,90 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+    - hosts: "{{ hosts }}"
+  tasks:
+    - name: copy the scripts
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/scripts/', dest: '{{ path }}/gsa/{{ serv }}'}
+      when: (serv== "lobby")
+
+    - name: copy the sslcerts
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0755
+      with_items:
+      - { src: '{{ job }}/ssl/', dest: '{{ path }}/lib/ssl/'}
+      when: (serv == "lobby")
+
+
+    - name: copy the lobby XML files
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/serverconfiguration_{{ serv }}.xml', dest: '{{ path }}/{{ serv}}lib/serverconfig/' }
+      - { src: '{{ job }}/{{ serv }}/middleware_{{ serv }}.xml', dest: '{{ path }}/{{ serv }}lib/serverconfig/'}
+      - { src: '{{ job }}/log4j.xml', dest: '{{ path }}/lib/'}
+      when: ( serv == "lobby")
+
+    - name: delete lobby from /home/gameadmin
+      become: true
+      file:
+        path: /home/gameadmin/lobby
+        state: absent
+
+
+    - name: copy the lobby COMMON PROPERTIES files
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/common{{ serv }}.properties', dest: '/home/gameadmin/{{ serv }}/' }
+      when: (serv == "lobby")
+
+    - name: copy the lobby SPECIFIC PROPERTIES files
+      become: true
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: gameadmin
+        group: gameadmin
+        mode: 0644
+      with_items:
+      - { src: '{{ job }}/{{ serv }}/{{ hosts }}.properties', dest: '/home/gameadmin/{{ serv }}/' }
+      - { src: '{{ job }}/{{ serv }}/{{ hosts }}.properties', dest: '/home/gameadmin/{{ serv }}/' }
+      when: (serv == "lobby" and hosts == "lobby1") or (serv == "lobby" and hosts == "lobby2") or  (serv == "lobby" and hosts == "lobby3") (serv == "lobby" and hosts == "lobby4") (serv == "lobby" and hosts == "lobby5") (serv == "lobby" and hosts == "lobby6") (serv == "lobby" and hosts == "lobby7") (serv == "lobby" and hosts == "lobby8")
+
+    - name: merge lobby properties
+      become: true
+      assemble:
+        src: "/home/gameadmin/{{ serv }}"
+        dest: mergedfile
+      when: ( serv == "lobby")
+
+    - name: Find uniqe entries
+      become: true
+      shell: cat mergedfile  > "{{ path }}/{{ serv }}lib/{{ serv }}.properties"
+      when: ( serv == "lobby")
