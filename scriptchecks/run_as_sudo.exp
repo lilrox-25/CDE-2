@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+#set script "addhost.sh"
+cd /home/devops/scriptchecks
+spawn sudo -k -S ./addhost.sh
+
+expect "Password:"
+
+send -- "devops\r"
+
+expect eof

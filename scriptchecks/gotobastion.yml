@@ -1,0 +1,10 @@
+---
+- name: "Playbook to build artifactory server jobs"
+  hosts: "{{ host }}"
+  become: true
+  #vars:
+
+  tasks:
+    - name: "update hostfile at destination"
+      become: true
+      shell: ansible-playbook hostfile.yml --limit "tourneymaster,tounreynode1,tounreynode2,tounreynode3,tounreynode4,tounreynode5" 
