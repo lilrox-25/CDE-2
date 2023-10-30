@@ -1,0 +1,94 @@
+---
+- name: "Playbook to install softwares on servers"
+  gather_facts: false
+  hosts: all
+  vars_prompt:
+    - name: software
+      prompt: Which software do you want to install? Type 'A/a' for JAVA, 'B/b'for TOMCAT, 'C/c' for NPM
+      private: false
+
+    - name: versionT
+      prompt: Which TOMCAT version do you want to install (type default for latest version OR press enter to skip)
+      private: false
+      #when: (software == "B") or (software == "b")
+
+    - name: versionJ
+      prompt: Which JAVA version do you want to install (type default for latest version OR press enter to skip)
+      private: false
+      #when: (software == "A") or (software == "a")
+    - name: versionN
+      prompt: Which NPM version would you like to install? (Type default for latest version OR press enter to skip)
+      private: false
+
+
+  tasks:
+    - name: Install tomcat-9
+      shell: |
+        wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.11/bin/apache-tomcat-9.0.11.tar.gz
+        tar -xvzf apache-tomcat-9.0.11.tar.gz
+      when: (versionT == "9")
+
+    - name: Install tomcat-8
+      shell: |
+        wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.tar.gz
+        tar -xvzf apache-tomcat-8.5.5.tar.gz
+      when: (versionT == "8")
+
+    - name: Installing latest tomcat version
+      shell: wget 
+      when: (versionT == "default")
+
+    - name: Checking Ubuntu version
+      shell: lsb_release -a
+      register: ubuntu_version
+
+
+    - debug:
+        var: "ubuntu_version.stdout_lines"
+
+    - name: Installing Java 17
+      become: true
+      shell: |
+        wget https://download.java.net/java/GA/jdk17.0.1/2a2082e5a09d4267845be086888add4f/12/GPL/openjdk-17.0.1_linux-x64_bin.tar.gz
+        tar -xvf openjdk-17.0.1_linux-x64_bin.tar.gz
+        tar -xvf openjdk-17.0.1_linux-x64_bin.tar.gz -C /usr/lib/jvm/
+        update-alternatives --install /usr/bin/javac javac /root/jdk-17.0.1/bin/javac 1000
+        update-alternatives --install /usr/bin/java java /root/jdk-17.0.1/bin/java 1000
+        su - gameadmin
+        vi ~/.profile
+        echo "export JAVA_HOME=/usr/lib/jvm/jdk-17.0.1/bin/java\nexport PATH=$PATH:/usr/lib/jvm/jdk-17.0.1/bin/" >> ~/.profile
+        source ~/.profile
+      when: (software == "A" and ubuntu_version == "16.04" and version == "17") or (ubuntu_version == "16.04" and software == "a" and version == "17")
+
+    - name: Installing Java 17 on ubuntu > 20
+      become: true
+      shell: |
+        apt update
+        apt upgrade                      
+        apt install openjdk-17*
+      when: (software == "A") or (software == "a")
+#openjdk-8-jdk
+
+    - name: Installing NPM default/latest version
+      become: true
+      shell: |
+        sudo apt install nodejs
+        sudo apt install npm
+      when: (versionN == "default")
+
+    - name: Installing NPM 16 version since ubuntu does not support
+      become: true
+      shell: | 
+        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+      when: versionN != "default" and "'18.04' in ubuntu_version | join(' ')"
+
+    - name: Installing NPM {{ versionN }}th version
+      become: true
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_{{ versionN }}.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+      when: versionN != "default" and ubuntu_version[2] | version_compare('20.04' , '>=') 
+
+
+

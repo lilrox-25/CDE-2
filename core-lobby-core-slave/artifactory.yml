@@ -1,0 +1,40 @@
+---
+- name: "Playbook to build artifactory server jobs"
+  hosts: "{{ host }}"
+  become: true
+  vars:
+    - serv: "{{ service }}"
+  tasks:
+    - name: "Ansible Checking branch specific folders"
+      stat:
+        path: "{{ path }}/{{ branch }}"
+      register: my_folder
+
+    - name: "echo folder already exists"
+      debug:
+        msg: "the {{ branch }} directory is already exists"
+      when: my_folder.stat.exists
+
+    - name: "Create branch specific folder if not exists"
+      become: true
+      file:
+        path: "{{ path }}/{{ branch }}/"
+        state: directory
+        mode: 0755
+        group: "gameadmin"
+        owner: "gameadmin"
+      when: my_folder.stat.exists == false
+
+
+    - name: "copy the built jar to destination"
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/{{ branch }}"
+        owner: "gameadmin"
+        group: "gameadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*.jar'
+      when: (serv == "acedependency") or (serv == "java_dynamo")
+

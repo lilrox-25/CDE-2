@@ -1,0 +1,92 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+  tasks:
+    - name: "Ansible Checking {{service}} folders"
+      stat:
+        path: "{{ path }}/{{ service }}"
+      register: my_folder
+
+    - name: "echo {{ service }} already existed"
+      debug:
+        msg: "the {{ service }} directory is already existed"
+      when: my_folder.stat.exists
+
+    - name: "Creating {{ service }} folders if not exists"
+      file:
+        path: "{{ path }}/{{ service }}"
+        state: directory
+        mode: 0755
+        group: webadmin
+        owner: webadmin
+      when: my_folder.stat.exists == false
+
+    - name: Display paths of all {{ serv }} files in dir
+      debug: msg={{ lookup('fileglob', '{{ job }}/target/{{ serv }}*.jar') }}
+
+# uncomment bellow tasks
+    - name: Copy jar files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/{{ serv }}/"
+        owner: "webadmin"
+        group: "webadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*SNAPSHOT.jar'
+          #- '{{ job }}/target/*SNAPSHOT.war'
+      when: (serv== "a23-platform-services") or (serv== "bonus_engine")  or (serv== "platform_services")
+#     when: (serv== "platform_services") or (serv== "ace2three") or (serv== "bonus_engine")  
+    
+
+
+    - name: Copy the scripts to services
+      copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/{{ serv }}/"
+        owner: "webadmin"
+        group: "webadmin"
+        mode: 0777
+      with_fileglob:
+        - '{{ job }}/start-{{ serv }}.sh'
+        - '{{ job }}/stop-{{ serv }}.sh'
+        - '{{ job }}/run.sh'
+      when: (serv== "a23-platform-services") or (serv== "bonus_engine") or (serv== "platform_services")
+
+# uncomment above tasks
+
+      #    - name: start the {{ serv }} service
+      #      ansible.builtin.shell: 
+      #        cmd: sh "{{ path }}/{{ serv }}/run.sh"
+      #      when: (serv== "bonus_engine") or (serv== "platform_services") or (serv== "a23-platform-services") or (serv== "PFAdmin")
+
+    - name: stop the {{ serv }} service
+      #shell: "sh {{ path }}/{{ serv }}/stop-{{ serv }}.sh"
+      local_action: shell /home/devops/ansible/core-lobby/tomcatscripts/admin-stop-{{ serv }}.sh {{ pod }}
+      when: (serv== "platform_services") or (serv== "bonus_engine") or (serv== "a23-platform-services")
+      ignore_errors: true
+
+
+      #    - name: start the {{ serv }} service
+      #      shell: sh "{{ path }}/{{ serv }}/run.sh"
+      #      when: (serv== "PFAdmin")
+      #      ignore_errors: true
+
+    - name: start the {{ serv }} service
+      #shell: "sh {{ path }}/{{ serv }}/start-{{ serv }}.sh"
+      local_action: shell /home/devops/ansible/core-lobby/tomcatscripts/admin-start-{{ serv }}.sh {{ pod }}
+      when: (serv== "platform_services") or (serv== "bonus_engine") or (serv== "a23-platform-services")
+      ignore_errors: true
+
+
+      #    - name: start the bonus service
+      #      shell: " /usr/bin/java java -Dserver.port=9095 -jar bonus-engine-0.0.1-SNAPSHOT.jar --server.servlet.context-path=/bonus-engine --spring.profiles.active=dev & "
+      #      when: (serv== "bonus_engine") 
+      #      
+      #
+      #    - name: start the platform_service service
+      #      shell: " /usr/bin/java java -jar admin-platform-services-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev --server.port=8081 &"
+      #      when: (serv== "platform_services") 

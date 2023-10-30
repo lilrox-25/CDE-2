@@ -1,0 +1,133 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ host }}"
+  #  become: true
+  vars:
+    - serv: "{{ service }}"
+    - date: "{{ lookup('pipe', 'date +%d-%m-%y-%T') }}"
+      #    - file_vars:
+      #        - {name: "{{ path }}/{{ serv }}lib"}
+          #        - {name: /opt/ace2three/backup}
+  tasks:
+    - name: "Ansible Checking {{service}}lib folders"
+      stat:
+        path: "{{ path }}/{{ service }}lib"
+      register: my_folder
+
+    - name: "echo {{ service }}lib already existed"
+      debug:
+        msg: "the {{ service }}lib directory is already existed"
+      when: my_folder.stat.exists
+
+    - name: "Creating {{ service }}lib folders if not exists"
+      become: true
+      file:
+        path: "{{ path }}/{{ service }}lib"
+        state: directory
+        mode: 0755
+        group: gameadmin
+        owner: gameadmin
+      when: my_folder.stat.exists == false 
+
+      #- name: "Ansible Checking /home/gameadmin/{{ serv }} folders"
+      #- stat:
+      #-   path: "/home/gameadmin/{{ serv }}"
+      #- register: my_folder2
+      #- when: (serv == "lobby")
+
+      #- name: "echo /home/gameadmin/{{ serv }} already existed"
+      #- debug:
+      #-   msg: "the /home/gameadmin/{{ serv }} directory is already existed"
+      #- when: (serv == "lobby" and  my_folder2.stat.exists)
+
+      #- name: "Creating lobby directory to merge"
+      #- become: true
+      #- file:
+      #-  path: "/home/gameadmin/{{ serv }}"
+      #-  state: directory
+      #-  mode: 0755
+      #-  group: gameadmin
+      #-  owner: gameadmin
+      #- when: ( serv == "lobby" and my_folder2.stat.exists == false )
+
+
+      # - name: "Backup the existing code"
+      #archive:
+      # path: /opt/ace2three/newgameserver/{{ serv }}lib
+      # dest: /opt/ace2three/backup/{{ date}}{{ serv }}lib.tar.gz
+      # owner: gameadmin
+      # group: gameadmin
+        # format: gz
+        #when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "normaltourneymaster") or (serv== "normaltourneynode") or (serv== "rank") or (serv== "chat") or (serv== "a23service") or (serv== "a23bridge") or (serv== "gamerule") or (serv== "a23analytics")
+        #when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "rank") or (serv== "chat") or (serv== "Ace2ThreeService") or (serv== "a23bridge") or (serv== "gamerule") or (serv== "Ace23Analytics")
+
+      #  - name: "Backup the existing code"
+      #archive:
+      # path: /opt/ace2three/newgameserver/{{ serv }}
+      # dest: /opt/ace2three/backup/{{ date}}{{ serv }}.tar.gz
+      # owner: gameadmin
+      # group: gameadmin
+      # format: gz
+      #when: (serv== "Ace2ThreeService") or (serv== "Ace23Analytics")
+
+      #- name: remove the existing code
+      #become: true
+      #file:
+      # path: /opt/ace2three/newgameserver/{{ serv }}lib/
+      # state: absent
+        #when: (serv == "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "normaltourneymaster") or (serv== "normaltourneynode") or (serv== "rank") or (serv== "chat") or (serv== "a23service") or (serv== "a23bridge") or (serv== "gamerule") or (serv== "a23analytics") or (serv== "clevertap")
+        #when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "rank") or (serv== "chat") or (serv== "Ace2ThreeService") or (serv== "a23bridge") or (serv== "gamerule") or (serv== "Ace23Analytics")
+
+      # - name: remove the existing code
+      #file:
+      # path: /opt/ace2three/newgameserver/{{ serv }}/
+      # state: absent
+      #when: (serv== "Ace2ThreeService") or (serv== "Ace23Analytics")
+
+    - name: Display paths of all .txt files in dir
+      debug: msg={{ lookup('fileglob', '{{ job }}/target/*dependencies.jar') }}
+
+    - name: Copy each file over that matches the given pattern
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path }}/{{ serv }}lib/"
+        owner: "gameadmin"
+        group: "gameadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*dependencies.jar'
+        - '{{ job }}/target/*.war'
+      when: (serv== "lobby") or (serv== "realpool") or (serv== "realstake") or (serv== "ptrealpool") or (serv== "ptrealstake") or (serv== "playpool") or (serv == "longertourneymaster") or (serv== "longertourneynode") or (serv== "oldtourneymaster") or (serv== "oldtourneynode") or (serv== "rank") or (serv== "chat") or (serv== "a23bridge") or (serv== "gamerule")
+
+    - name: Copy a23 service war
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        #dest: "/opt/ace2three/newgameserver/apache-tomcat-8.0.26/webapps/"
+        dest: "/opt/ace2three/newgameserver/Ace2ThreeService/webapps/"
+        owner: "gameadmin"
+        group: "gameadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*.war'
+          #when: (serv== "a23service")
+      when: (serv== "Ace2ThreeService") 
+
+    - name: Copy a23 analytics war
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        #dest: "/opt/ace2three/newgameserver/apache-tomcat-9.0.11/webapps/"
+        dest: "/opt/ace2three/newgameserver/Ace23Analytics/webapps/"
+        owner: "gameadmin"
+        group: "gameadmin"
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*.war'
+      when: (serv== "Ace23Analytics") 
+      
+      #testing.. please ignore
+
+
+

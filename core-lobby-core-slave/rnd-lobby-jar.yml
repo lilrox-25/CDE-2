@@ -1,0 +1,35 @@
+---
+- name: "Playbook to copy apps"
+  hosts: "{{ rnd_host }}"
+  vars:
+    - serv: "{{ service }}"
+  #gather_facts: false
+  #  become: true
+  tasks:
+    - name: "Ansible Checking {{service}} folders"
+      stat:
+        path: "{{ path2 }}/{{ service }}"
+      register: my_folder
+
+    - name: "echo {{ service }} already existed"
+      debug:
+        msg: "the {{ service }} directory is already existed"
+      when: my_folder.stat.exists
+
+    - name: "Creating {{ service }} folders if not exists"
+      file:
+        path: "{{ path2 }}/{{ service }}"
+        state: directory
+        mode: 0755
+        group: devops
+        owner: devops
+      when: my_folder.stat.exists == false
+    - name: "Copy the built artifacts to public server"
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ path2 }}/{{ serv }}"
+        owner: devops
+        group: devops
+        mode: 0600
+      with_fileglob:
+        - '{{ job }}/target/*.jar'
